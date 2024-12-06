@@ -150,9 +150,9 @@ namespace Ink_Store
 
             foreach (InkStroke stroke in currentStrokes)
             {
-                //tranforms : we suppose it's always the identity
-                //Debug.WriteLine("stroke transformation : %s", stroke.PointTransform.IsIdentity.ToString());
-                //Debug.WriteLine(stroke.DrawingAttributes.PenTipTransform.ToString()); //transforms ?
+                // transforms : there can be an offset
+                System.Numerics.Vector2 translation = stroke.PointTransform.Translation;
+                Debug.WriteLine("stroke translation", translation.ToString());
 
                 List<PointJSON> points = new List<PointJSON>();
 
@@ -162,8 +162,8 @@ namespace Ink_Store
                     points.Add(
                         new PointJSON
                         {
-                            X = inkpoint.Position.X,
-                            Y = inkpoint.Position.Y,
+                            X = inkpoint.Position.X + translation.X,
+                            Y = inkpoint.Position.Y + translation.Y,
                             pressure = inkpoint.Pressure,
                         }
                         );
