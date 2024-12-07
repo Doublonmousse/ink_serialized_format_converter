@@ -242,6 +242,7 @@ async fn load_book(book: BookEntry, root_folder: &PathBuf) -> anyhow::Result<()>
         color_background.2 as f64 / 255.0,
         color_background.3 as f64 / 255.0,
     );
+    let mut strokes_collect : Vec<(Stroke,Option<StrokeLayer>)> = vec![];
 
     // iterate over pages
     for (page_num, page) in book.Pages.iter().enumerate() {
@@ -289,11 +290,9 @@ async fn load_book(book: BookEntry, root_folder: &PathBuf) -> anyhow::Result<()>
                 );
 
                 let layer = StrokeLayer::UserLayer(0);
-
-                engine
-                    .store
-                    .insert_stroke(Stroke::BrushStroke(new_stroke), Some(layer));
-                // insert stroke is a private method.
+                strokes_collect.push(
+                    (Stroke::BrushStroke(new_stroke), Some(layer))
+                );
             }
 
             // see if there is any images to insert as well
@@ -341,14 +340,17 @@ async fn load_book(book: BookEntry, root_folder: &PathBuf) -> anyhow::Result<()>
                             ),
                         );
 
-                        engine
-                            .store
-                            .insert_stroke(Stroke::BitmapImage(bitmapimage), None);
+                        strokes_collect.push(
+                            (Stroke::BitmapImage(bitmapimage), None)
+                        );
                     }
                 }
             }
         }
     }
+
+    // push all strokes to the engine
+    let _ = engine.import_generated_content(strokes_collect,false);
 
     let bytes = engine.save_as_rnote_bytes(book.Title.clone()).await??;
 

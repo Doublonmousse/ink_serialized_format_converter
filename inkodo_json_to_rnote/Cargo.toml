@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rnote-engine = { path = "../rnote/crates/rnote-engine", features=["cli"]}
-rnote-compose = { path = "../rnote/crates/rnote-compose", features = ["clap-derive"]}
+rnote-engine = { git = "https://github.com/flxzt/rnote/", features=["cli"]}
+rnote-compose = { git = "https://github.com/flxzt/rnote", features = ["clap-derive"]}
 nalgebra = "0.33.2"
 smol = "2.0.2"
 anyhow = "1.0.93"

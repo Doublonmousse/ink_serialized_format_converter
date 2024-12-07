@@ -2,8 +2,6 @@
 
 Convert inkodo files to rnote files. To do so, you first have to extract the stroke content from the inkodo backup (by using the other part of this project, the ink_serialized_format_converter, a UWP windows-only app).
 
-Uses a patched rnote version (for now, done locally, should point to https://github.com/Doublonmousse/rnote/tree/make_load_stroke_public)
-
 # Structure 
 
 ```
